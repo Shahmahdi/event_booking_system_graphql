@@ -15,9 +15,12 @@ module.exports = {
         throw e;
       });
   },
-  createEvent: async args => {
+  createEvent: async (args, req) => {
     try {
-      const userId = '5eda0309d8e28408c07c3a08';
+      if (!req.isAuth) {
+        throw new Error('User is not authorized.')
+      }
+      const userId = req.userId;
       const user = await User.findById(userId);
       if (!user) {
         throw new Error('User not found.');

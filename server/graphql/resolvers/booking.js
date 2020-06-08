@@ -3,8 +3,11 @@ const Booking = require('../../models/Booking');
 const { getUser, getEvent } = require('./common');
 
 module.exports = {
-  bookings: async () => {
+  bookings: async req => {
     try {
+      if (!req.isAuth) {
+        throw new Error('User is not authorized.');
+      }
       const bookings = await Booking.find();
       return bookings.map(booking => ({
         ...booking._doc,
@@ -17,9 +20,12 @@ module.exports = {
       throw error;
     }
   },
-  bookEvent: async args => {
+  bookEvent: async (args, req) => {
     try {
-      const userId = '5eda0309d8e28408c07c3a08';
+      if (!req.isAuth) {
+        throw new Error('User is not authorized.');
+      }
+      const userId = req.userId;
       const fetchedEvent = await Event.findById(args.eventId);
       const booking = new Booking({
         event: fetchedEvent,
@@ -37,8 +43,11 @@ module.exports = {
       throw error;
     }
   },
-  cancelBooking: async args => {
+  cancelBooking: async (args, req) => {
     try {
+      if (!req.isAuth) {
+        throw new Error('User is not authorized.');
+      }
       const booking = await Booking.findById(args.bookingId).populate('event');
       const event = {
         ...booking.event._doc,
