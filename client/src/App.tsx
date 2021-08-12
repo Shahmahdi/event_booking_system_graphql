@@ -15,6 +15,11 @@ function App() {
           path="/" 
           component={LoginPage}
         />
+        <Route 
+          exact 
+          path="/login" 
+          component={LoginPage}
+        />
         <Route
           exact
           path="/events"

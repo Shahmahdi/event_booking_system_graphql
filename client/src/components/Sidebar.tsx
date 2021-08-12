@@ -26,6 +26,7 @@ export const Sidebar = withRouter(
         classes={{
           paper: `w-260px`,
         }}
+        transitionDuration={500}
         onClose={() => props.setOpenSidebar(false)}
       >
         <List
